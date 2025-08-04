@@ -154,8 +154,34 @@ public class SudokuBoard {
      * pre: board has been initialized
      * post: returns true if the board is valid and complete, false otherwise
      */
-    public boolean isSolved() {
-
+ public boolean isSolved() {
+        if (!isValid()) {
+            return false;
+        }
+        
+        Map<Integer, Integer> frequencies = new HashMap<>();
+        for (int i = 1; i <= 9; i++) {
+            frequencies.put(i, 0);
+        }
+        
+        // Count frequencies of each number
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                int value = board[row][col];
+                if (value == 0) {
+                    return false; // Board has empty cells
+                }
+                frequencies.put(value, frequencies.get(value) + 1);
+            }
+        }
+        
+        // Check if each number appears exactly 9 times
+        for (int count : frequencies.values()) {
+            if (count != 9) {
+                return false;
+            }
+        }
+        
         return true;
     }
     
